@@ -93,7 +93,7 @@ namespace SurplusCalculator.Test.Models
                 /*5,
                 1,*/
                 5,
-                //1,
+                1,
                 3,
                 2,
                 1,
