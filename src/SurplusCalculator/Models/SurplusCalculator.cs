@@ -20,10 +20,10 @@ namespace SurplusCalculator.Models
             return calculationState.MinimumItemInfos;
         }
 
-        private void FindMinimum(int sourceItemLength, 
-                                 IDictionary<int, int> targetItemCountsByLengths, 
-                                 IList<ItemInfo> actualItemInfos, 
-                                 CalculationState calculationState)
+        private static void FindMinimum(int sourceItemLength, 
+                                        IDictionary<int, int> targetItemCountsByLengths, 
+                                        IList<ItemInfo> actualItemInfos, 
+                                        CalculationState calculationState)
         {
             if (targetItemCountsByLengths.Count == 0)
             {
@@ -32,6 +32,7 @@ namespace SurplusCalculator.Models
                 {
                     calculationState.MinimumItemInfos = actualItemInfos;
                 }
+
                 return;
             }
 
