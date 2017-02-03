@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurplusCalculator", "SurplusCalculator\SurplusCalculator.csproj", "{EF1C49E2-2E53-4408-BA00-BADF6724A3B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurplusCalculator.Test", "SurplusCalculator.Test\SurplusCalculator.Test.csproj", "{7696AAC9-376B-41DB-9983-78E63C00C652}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurplusCalculator.Tests", "SurplusCalculator.Tests\SurplusCalculator.Tests.csproj", "{7696AAC9-376B-41DB-9983-78E63C00C652}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

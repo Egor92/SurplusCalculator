@@ -87,9 +87,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\CalculationState.cs" />
     <Compile Include="Models\ItemInfo.cs" />
     <Compile Include="Models\SurplusCalculator.cs" />
-    <Compile Include="Models\ItemInfoHelper.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

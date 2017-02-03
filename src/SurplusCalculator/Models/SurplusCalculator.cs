@@ -6,69 +6,75 @@ namespace SurplusCalculator.Models
 {
     public class SurplusCalculator
     {
-        public IList<ItemInfo> Calculate(double sourceItemLength, IList<double> targetItemLengths)
+        public IList<ItemInfo> Calculate(int sourceItemLength, IDictionary<int, int> targetItemCountsByLengths)
         {
-            targetItemLengths = targetItemLengths.OrderByDescending(x => x)
-                                                 .ToList();
-            foreach  (var targetItemLength in targetItemLengths)
+            foreach (var pair in targetItemCountsByLengths)
             {
+                var targetItemLength = pair.Key;
                 if (targetItemLength > sourceItemLength)
                     throw new ArgumentException();
             }
 
-            IList<ItemInfo> minimumItemInfos = GetMinimum(sourceItemLength, targetItemLengths, new List<ItemInfo>());
-            return minimumItemInfos;
+            CalculationState calculationState = new CalculationState();
+            FindMinimum(sourceItemLength, targetItemCountsByLengths, new List<ItemInfo>(), calculationState);
+            return calculationState.MinimumItemInfos;
         }
 
-        private IList<ItemInfo> GetMinimum(double sourceItemLength, IList<double> targetItemLengths, IList<ItemInfo> actualItemInfos)
+        private static void FindMinimum(int sourceItemLength, 
+                                        IDictionary<int, int> targetItemCountsByLengths, 
+                                        IList<ItemInfo> actualItemInfos, 
+                                        CalculationState calculationState)
         {
-            if (targetItemLengths.Count == 0)
-                return actualItemInfos;
-
-            IList<ItemInfo> actualMinimumItemInfos = null;
-
-            for (int i = 0; i < targetItemLengths.Count; i++)
+            if (targetItemCountsByLengths.Count == 0)
             {
-                var currentItemLenght = targetItemLengths[i];
-                var copiedItemLengths = targetItemLengths.ToList();
-                copiedItemLengths.Remove(currentItemLenght);
+                var isActualItemInfosMinimum = actualItemInfos.Count < calculationState.ItemCount;
+                if (isActualItemInfosMinimum)
+                {
+                    calculationState.MinimumItemInfos = actualItemInfos;
+                }
+
+                return;
+            }
+
+            var stateHash = ItemInfoHelper.GetHash(actualItemInfos);
+            var isStateVisited = calculationState.VisitedStateHashes.Contains(stateHash);
+            if (isStateVisited)
+                return;
+            calculationState.VisitedStateHashes.Add(stateHash);
+
+            foreach (var pair in targetItemCountsByLengths)
+            {
+                var currentItemLength = pair.Key;
+
+                var copiedItemCountsByLengths = new Dictionary<int, int>(targetItemCountsByLengths);
+                copiedItemCountsByLengths[currentItemLength]--;
+                if (copiedItemCountsByLengths[currentItemLength] == 0)
+                {
+                    copiedItemCountsByLengths.Remove(currentItemLength);
+                }
 
                 foreach (var currentItemInfo in actualItemInfos)
                 {
-                    var hasFreeLength = currentItemInfo.GetSurplus() >= currentItemLenght;
-                    if (hasFreeLength)
-                    {
-                        var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
-                        var copiedItemInfos = new List<ItemInfo>(dictionary.Values);
-                        dictionary[currentItemInfo].TargetItemLenghts.Add(currentItemLenght);
+                    var hasFreeLength = ItemInfoHelper.GetFreeLength(currentItemInfo) >= currentItemLength;
+                    if (!hasFreeLength)
+                        continue;
 
-                        var itemInfos = GetMinimum(sourceItemLength, copiedItemLengths, copiedItemInfos);
-                        actualMinimumItemInfos = GetMinimum(actualMinimumItemInfos, itemInfos);
-                    }
+                    var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
+                    var copiedItemInfos = new List<ItemInfo>(dictionary.Values);
+                    dictionary[currentItemInfo].TargetItemLenghts.Add(currentItemLength);
+
+                    FindMinimum(sourceItemLength, copiedItemCountsByLengths, copiedItemInfos, calculationState);
                 }
-
                 {
                     var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
                     var copiedItemInfos = new List<ItemInfo>(dictionary.Values)
                     {
-                        new ItemInfo(sourceItemLength, currentItemLenght)
+                        new ItemInfo(sourceItemLength, currentItemLength)
                     };
 
-                    var itemInfos = GetMinimum(sourceItemLength, copiedItemLengths, copiedItemInfos);
-                    actualMinimumItemInfos = GetMinimum(actualMinimumItemInfos, itemInfos);
+                    FindMinimum(sourceItemLength, copiedItemCountsByLengths, copiedItemInfos, calculationState);
                 }
             }
-
-            return actualMinimumItemInfos;
-        }
-
-        private IList<ItemInfo> GetMinimum(IList<ItemInfo> left, IList<ItemInfo> right)
-        {
-            var leftSurplus = ItemInfoHelper.GetSurplus(left);
-            var rightSurplus = ItemInfoHelper.GetSurplus(right);
-            return leftSurplus < rightSurplus
-                ? left
-                : right;
         }
     }
 }
