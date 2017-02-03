@@ -6,43 +6,46 @@ namespace SurplusCalculator.Models
 {
     public class SurplusCalculator
     {
-        public IList<ItemInfo> Calculate(int sourceItemLength, IList<int> targetItemLengths)
+        public IList<ItemInfo> Calculate(int sourceItemLength, IDictionary<int, int> targetItemCountsByLengths)
         {
-            targetItemLengths = targetItemLengths.OrderByDescending(x => x)
-                                                 .ToList();
-            foreach (var targetItemLength in targetItemLengths)
+            foreach (var pair in targetItemCountsByLengths)
             {
+                var targetItemLength = pair.Key;
                 if (targetItemLength > sourceItemLength)
                     throw new ArgumentException();
             }
 
-            IList<ItemInfo> minimumItemInfos = GetMinimum(sourceItemLength, targetItemLengths, new List<ItemInfo>());
+            IList<ItemInfo> minimumItemInfos = GetMinimum(sourceItemLength, targetItemCountsByLengths, new List<ItemInfo>());
             return minimumItemInfos;
         }
 
-        private IList<ItemInfo> GetMinimum(int sourceItemLength, IList<int> targetItemLengths, IList<ItemInfo> actualItemInfos)
+        private IList<ItemInfo> GetMinimum(int sourceItemLength, IDictionary<int, int> targetItemCountsByLengths, IList<ItemInfo> actualItemInfos)
         {
-            if (targetItemLengths.Count == 0)
+            if (targetItemCountsByLengths.Count == 0)
                 return actualItemInfos;
 
             IList<ItemInfo> actualMinimumItemInfos = null;
 
-            for (int i = 0; i < targetItemLengths.Count; i++)
+            foreach (var pair in targetItemCountsByLengths)
             {
-                var currentItemLenght = targetItemLengths[i];
-                var copiedItemLengths = targetItemLengths.ToList();
-                copiedItemLengths.Remove(currentItemLenght);
+                var currentItemLength = pair.Key;
+                var currentItemCount = pair.Value;
+
+                var copiedItemCountsByLengths = new Dictionary<int, int>(targetItemCountsByLengths);
+                copiedItemCountsByLengths[currentItemLength]--;
+                if (copiedItemCountsByLengths[currentItemLength] == 0)
+                    copiedItemCountsByLengths.Remove(currentItemLength);
 
                 foreach (var currentItemInfo in actualItemInfos)
                 {
-                    var hasFreeLength = currentItemInfo.GetSurplus() >= currentItemLenght;
+                    var hasFreeLength = currentItemInfo.GetSurplus() >= currentItemLength;
                     if (hasFreeLength)
                     {
                         var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
                         var copiedItemInfos = new List<ItemInfo>(dictionary.Values);
-                        dictionary[currentItemInfo].TargetItemLenghts.Add(currentItemLenght);
+                        dictionary[currentItemInfo].TargetItemLenghts.Add(currentItemLength);
 
-                        var itemInfos = GetMinimum(sourceItemLength, copiedItemLengths, copiedItemInfos);
+                        var itemInfos = GetMinimum(sourceItemLength, copiedItemCountsByLengths, copiedItemInfos);
                         actualMinimumItemInfos = GetMinimum(actualMinimumItemInfos, itemInfos);
                     }
                 }
@@ -50,10 +53,10 @@ namespace SurplusCalculator.Models
                     var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
                     var copiedItemInfos = new List<ItemInfo>(dictionary.Values)
                     {
-                        new ItemInfo(sourceItemLength, currentItemLenght)
+                        new ItemInfo(sourceItemLength, currentItemLength)
                     };
 
-                    var itemInfos = GetMinimum(sourceItemLength, copiedItemLengths, copiedItemInfos);
+                    var itemInfos = GetMinimum(sourceItemLength, copiedItemCountsByLengths, copiedItemInfos);
                     actualMinimumItemInfos = GetMinimum(actualMinimumItemInfos, itemInfos);
                 }
             }
