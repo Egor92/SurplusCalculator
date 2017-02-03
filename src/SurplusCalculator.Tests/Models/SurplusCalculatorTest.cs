@@ -100,7 +100,7 @@ namespace SurplusCalculator.Tests.Models
             var itemInfos = surplusCalculator.Calculate(6, targetItemCountsByLengths);
 
             Assert.That(() => itemInfos.Count, Is.EqualTo(3));
-            Assert.That(() => itemInfos.Select(x => x.GetSurplus()).Sum(), Is.EqualTo(0));
+            Assert.That(() => itemInfos.Select(ItemInfoHelper.GetFreeLength).Sum(), Is.EqualTo(0));
         }
     }
 }

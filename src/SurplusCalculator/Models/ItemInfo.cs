@@ -44,11 +44,6 @@ namespace SurplusCalculator.Models
 
         #endregion
 
-        public double GetSurplus()
-        {
-            return SourceItemLenght - TargetItemLenghts.Sum();
-        }
-
         #region Implementation of IEquatable<ItemInfo>
 
         public bool Equals(ItemInfo other)
@@ -63,5 +58,26 @@ namespace SurplusCalculator.Models
         }
 
         #endregion
+    }
+
+    public static class ItemInfoHelper
+    {
+        public static double GetFreeLength(ItemInfo itemInfos)
+        {
+            return itemInfos.SourceItemLenght - itemInfos.TargetItemLenghts.Sum();
+        }
+
+        public static string GetHash(IList<ItemInfo> itemInfos)
+        {
+            var orderedHashes = itemInfos.Select(GetHash)
+                                         .OrderByDescending(x => x);
+            return string.Concat(orderedHashes);
+        }
+
+        public static string GetHash(ItemInfo itemInfos)
+        {
+            var orderedLengths = itemInfos.TargetItemLenghts.OrderByDescending(x => x);
+            return $"{{{string.Join(";", orderedLengths)}}}";
+        }
     }
 }

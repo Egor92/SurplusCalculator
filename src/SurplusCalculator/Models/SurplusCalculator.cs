@@ -35,6 +35,12 @@ namespace SurplusCalculator.Models
                 return;
             }
 
+            var stateHash = ItemInfoHelper.GetHash(actualItemInfos);
+            var isStateVisited = calculationState.VisitedStateHashes.Contains(stateHash);
+            if (isStateVisited)
+                return;
+            calculationState.VisitedStateHashes.Add(stateHash);
+
             foreach (var pair in targetItemCountsByLengths)
             {
                 var currentItemLength = pair.Key;
@@ -48,7 +54,7 @@ namespace SurplusCalculator.Models
 
                 foreach (var currentItemInfo in actualItemInfos)
                 {
-                    var hasFreeLength = currentItemInfo.GetSurplus() >= currentItemLength;
+                    var hasFreeLength = ItemInfoHelper.GetFreeLength(currentItemInfo) >= currentItemLength;
                     if (!hasFreeLength)
                         continue;
 
