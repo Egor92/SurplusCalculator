@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using SurplusCalculator.Models;
 using Calculator = SurplusCalculator.Models.SurplusCalculator;
@@ -99,7 +100,7 @@ namespace SurplusCalculator.Tests.Models
             var itemInfos = surplusCalculator.Calculate(6, targetItemCountsByLengths);
 
             Assert.That(() => itemInfos.Count, Is.EqualTo(3));
-            Assert.That(() => ItemInfoHelper.GetSurplus(itemInfos), Is.EqualTo(0));
+            Assert.That(() => itemInfos.Select(x => x.GetSurplus()).Sum(), Is.EqualTo(0));
         }
     }
 }

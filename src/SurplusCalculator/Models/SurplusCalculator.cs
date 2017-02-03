@@ -15,39 +15,48 @@ namespace SurplusCalculator.Models
                     throw new ArgumentException();
             }
 
-            IList<ItemInfo> minimumItemInfos = GetMinimum(sourceItemLength, targetItemCountsByLengths, new List<ItemInfo>());
-            return minimumItemInfos;
+            CalculationState calculationState = new CalculationState();
+            FindMinimum(sourceItemLength, targetItemCountsByLengths, new List<ItemInfo>(), calculationState);
+            return calculationState.MinimumItemInfos;
         }
 
-        private IList<ItemInfo> GetMinimum(int sourceItemLength, IDictionary<int, int> targetItemCountsByLengths, IList<ItemInfo> actualItemInfos)
+        private void FindMinimum(int sourceItemLength, 
+                                 IDictionary<int, int> targetItemCountsByLengths, 
+                                 IList<ItemInfo> actualItemInfos, 
+                                 CalculationState calculationState)
         {
             if (targetItemCountsByLengths.Count == 0)
-                return actualItemInfos;
-
-            IList<ItemInfo> actualMinimumItemInfos = null;
+            {
+                var isActualItemInfosMinimum = actualItemInfos.Count < calculationState.ItemCount;
+                if (isActualItemInfosMinimum)
+                {
+                    calculationState.MinimumItemInfos = actualItemInfos;
+                }
+                return;
+            }
 
             foreach (var pair in targetItemCountsByLengths)
             {
                 var currentItemLength = pair.Key;
-                var currentItemCount = pair.Value;
 
                 var copiedItemCountsByLengths = new Dictionary<int, int>(targetItemCountsByLengths);
                 copiedItemCountsByLengths[currentItemLength]--;
                 if (copiedItemCountsByLengths[currentItemLength] == 0)
+                {
                     copiedItemCountsByLengths.Remove(currentItemLength);
+                }
 
                 foreach (var currentItemInfo in actualItemInfos)
                 {
                     var hasFreeLength = currentItemInfo.GetSurplus() >= currentItemLength;
-                    if (hasFreeLength)
-                    {
-                        var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
-                        var copiedItemInfos = new List<ItemInfo>(dictionary.Values);
-                        dictionary[currentItemInfo].TargetItemLenghts.Add(currentItemLength);
+                    if (!hasFreeLength)
+                        continue;
 
-                        var itemInfos = GetMinimum(sourceItemLength, copiedItemCountsByLengths, copiedItemInfos);
-                        actualMinimumItemInfos = GetMinimum(actualMinimumItemInfos, itemInfos);
-                    }
+                    var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
+                    var copiedItemInfos = new List<ItemInfo>(dictionary.Values);
+                    dictionary[currentItemInfo].TargetItemLenghts.Add(currentItemLength);
+
+                    FindMinimum(sourceItemLength, copiedItemCountsByLengths, copiedItemInfos, calculationState);
                 }
                 {
                     var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
@@ -56,21 +65,9 @@ namespace SurplusCalculator.Models
                         new ItemInfo(sourceItemLength, currentItemLength)
                     };
 
-                    var itemInfos = GetMinimum(sourceItemLength, copiedItemCountsByLengths, copiedItemInfos);
-                    actualMinimumItemInfos = GetMinimum(actualMinimumItemInfos, itemInfos);
+                    FindMinimum(sourceItemLength, copiedItemCountsByLengths, copiedItemInfos, calculationState);
                 }
             }
-
-            return actualMinimumItemInfos;
-        }
-
-        private IList<ItemInfo> GetMinimum(IList<ItemInfo> left, IList<ItemInfo> right)
-        {
-            var leftSurplus = ItemInfoHelper.GetSurplus(left);
-            var rightSurplus = ItemInfoHelper.GetSurplus(right);
-            return leftSurplus < rightSurplus
-                ? left
-                : right;
         }
     }
 }
