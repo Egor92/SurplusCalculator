@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using SurplusCalculator.Models;
 
-namespace SurplusCalculator.Test.Models
+namespace SurplusCalculator.Tests.Models
 {
     [TestFixture]
     public class ItemInfoTest
@@ -11,7 +11,7 @@ namespace SurplusCalculator.Test.Models
         public void IfHasTergetItems_CanCalculateSurplus()
         {
             var sourceItemLenght = 60;
-            var targetItemLenghts = new []{10, 8, 14, 6.5, 1.2, 4.4, 3};
+            var targetItemLenghts = new []{10, 8, 14, 6, 1, 4, 3};
             var outputDataItem = new ItemInfo(sourceItemLenght, targetItemLenghts);
 
             var actualSurplus = outputDataItem.GetSurplus();
@@ -24,7 +24,7 @@ namespace SurplusCalculator.Test.Models
         public void IfHasNoTergetItems_CanCalculateSurplus()
         {
             var sourceItemLenght = 60;
-            var targetItemLenghts = new double[0];
+            var targetItemLenghts = new int[0];
             var outputDataItem = new ItemInfo(sourceItemLenght, targetItemLenghts);
 
             var actualSurplus = outputDataItem.GetSurplus();

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using SurplusCalculator.Models;
 using Calculator = SurplusCalculator.Models.SurplusCalculator;
 
-namespace SurplusCalculator.Test.Models
+namespace SurplusCalculator.Tests.Models
 {
     [TestFixture(TestOf = typeof(Calculator))]
     public class SurplusCalculatorTest
@@ -18,7 +18,7 @@ namespace SurplusCalculator.Test.Models
         public void CanCalculate1()
         {
             var surplusCalculator = new Calculator();
-            var targetItemLengths = new double[]
+            var targetItemLengths = new []
             {
                 6,
                 5,
@@ -28,9 +28,9 @@ namespace SurplusCalculator.Test.Models
 
             var expected = new[]
             {
-                new ItemInfo(6, new double[] { 6 }),
-                new ItemInfo(6, new double[] { 5 }),
-                new ItemInfo(6, new double[] { 3 }),
+                new ItemInfo(6, new [] { 6 }),
+                new ItemInfo(6, new [] { 5 }),
+                new ItemInfo(6, new [] { 3 }),
             };
             CollectionAssert.AreEquivalent(expected, itemInfos);
         }
@@ -39,7 +39,7 @@ namespace SurplusCalculator.Test.Models
         public void CanCalculate2()
         {
             var surplusCalculator = new Calculator();
-            var targetItemLengths = new double[0];
+            var targetItemLengths = new int[0];
             var itemInfos = surplusCalculator.Calculate(6, targetItemLengths);
 
             var expected = new ItemInfo[0];
@@ -50,7 +50,7 @@ namespace SurplusCalculator.Test.Models
         public void CanCalculate3()
         {
             var surplusCalculator = new Calculator();
-            var targetItemLengths = new double[]
+            var targetItemLengths = new []
             {
                 6,
                 5,
@@ -61,9 +61,9 @@ namespace SurplusCalculator.Test.Models
 
             var expected = new []
             {
-                new ItemInfo(6, new double[] { 6 }),
-                new ItemInfo(6, new double[] { 5 }),
-                new ItemInfo(6, new double[] { 3, 3 }),
+                new ItemInfo(6, new [] { 6 }),
+                new ItemInfo(6, new [] { 5 }),
+                new ItemInfo(6, new [] { 3, 3 }),
             };
             CollectionAssert.AreEquivalent(expected, itemInfos);
         }
@@ -72,7 +72,7 @@ namespace SurplusCalculator.Test.Models
         public void CanCalculate4()
         {
             var surplusCalculator = new Calculator();
-            var targetItemLengths = new double[]
+            var targetItemLengths = new []
             {
                 7,
                 5,
@@ -88,7 +88,7 @@ namespace SurplusCalculator.Test.Models
         public void CanCalculate5()
         {
             var surplusCalculator = new Calculator();
-            var targetItemLengths = new double[]
+            var targetItemLengths = new []
             {
                 /*5,
                 1,*/
@@ -99,12 +99,12 @@ namespace SurplusCalculator.Test.Models
                 1,
                 /*4.5,
                 1.5,*/
-                3.72,
-                2.28,
+                /*4,
+                2,*/
             };
             var itemInfos = surplusCalculator.Calculate(6, targetItemLengths);
 
-            Assert.That(() => itemInfos.Count, Is.EqualTo(3));
+            Assert.That(() => itemInfos.Count, Is.EqualTo(2));
             Assert.That(() => ItemInfoHelper.GetSurplus(itemInfos), Is.EqualTo(0));
         }
     }

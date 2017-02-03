@@ -6,11 +6,11 @@ namespace SurplusCalculator.Models
 {
     public class SurplusCalculator
     {
-        public IList<ItemInfo> Calculate(double sourceItemLength, IList<double> targetItemLengths)
+        public IList<ItemInfo> Calculate(int sourceItemLength, IList<int> targetItemLengths)
         {
             targetItemLengths = targetItemLengths.OrderByDescending(x => x)
                                                  .ToList();
-            foreach  (var targetItemLength in targetItemLengths)
+            foreach (var targetItemLength in targetItemLengths)
             {
                 if (targetItemLength > sourceItemLength)
                     throw new ArgumentException();
@@ -20,7 +20,7 @@ namespace SurplusCalculator.Models
             return minimumItemInfos;
         }
 
-        private IList<ItemInfo> GetMinimum(double sourceItemLength, IList<double> targetItemLengths, IList<ItemInfo> actualItemInfos)
+        private IList<ItemInfo> GetMinimum(int sourceItemLength, IList<int> targetItemLengths, IList<ItemInfo> actualItemInfos)
         {
             if (targetItemLengths.Count == 0)
                 return actualItemInfos;
@@ -46,7 +46,6 @@ namespace SurplusCalculator.Models
                         actualMinimumItemInfos = GetMinimum(actualMinimumItemInfos, itemInfos);
                     }
                 }
-
                 {
                     var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
                     var copiedItemInfos = new List<ItemInfo>(dictionary.Values)

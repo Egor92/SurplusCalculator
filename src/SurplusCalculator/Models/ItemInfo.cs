@@ -8,10 +8,10 @@ namespace SurplusCalculator.Models
     {
         #region Ctor
 
-        public ItemInfo(double sourceItemLenght, double targetItemLenghts)
+        public ItemInfo(int sourceItemLenght, int targetItemLenghts)
         {
             SourceItemLenght = sourceItemLenght;
-            TargetItemLenghts = new List<double>
+            TargetItemLenghts = new List<int>
             {
                 targetItemLenghts
             };
@@ -20,20 +20,20 @@ namespace SurplusCalculator.Models
         public ItemInfo(ItemInfo other)
         {
             SourceItemLenght = other.SourceItemLenght;
-            TargetItemLenghts = new List<double>(other.TargetItemLenghts);
+            TargetItemLenghts = new List<int>(other.TargetItemLenghts);
         }
 
-        public ItemInfo(double sourceItemLenght, IEnumerable<double> targetItemLenghts)
+        public ItemInfo(int sourceItemLenght, IEnumerable<int> targetItemLenghts)
         {
             SourceItemLenght = sourceItemLenght;
-            TargetItemLenghts = new List<double>(targetItemLenghts);
+            TargetItemLenghts = new List<int>(targetItemLenghts);
         }
 
         #endregion
 
-        public double SourceItemLenght { get; }
+        public int SourceItemLenght { get; }
 
-        public List<double> TargetItemLenghts { get; }
+        public List<int> TargetItemLenghts { get; }
 
         #region Overrides of Object
 
@@ -55,7 +55,7 @@ namespace SurplusCalculator.Models
         {
             if (other == null)
                 return false;
-            if (SourceItemLenght != SourceItemLenght)
+            if (SourceItemLenght != other.SourceItemLenght)
                 return false;
             if (!TargetItemLenghts.SequenceEqual(other.TargetItemLenghts))
                 return false;
