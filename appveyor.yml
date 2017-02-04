@@ -1,6 +1,6 @@
 version: 1.0.0.{build}
 
-configuration: Release
+configuration: Release(Setup)
 
 before_build:
   - nuget restore "./src/SurplusCalculator.sln"
@@ -10,5 +10,4 @@ test:
     - '**\*.Tests.dll'
     
 artifacts:  
-- path: '**\*.nupkg'
-  name: NuGet
+  - path: '**\SurplusCalculatorSetup.msi'

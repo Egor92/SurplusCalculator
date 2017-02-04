@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using SurplusCalculator.Infrastructure;
 using SurplusCalculator.Models;
 using ReactiveCommand = ReactiveUI.ReactiveCommand;
@@ -37,49 +37,29 @@ namespace SurplusCalculator.ViewModels
 
         #region IsBusy
 
-        private bool _isBusy;
-
-        public bool IsBusy
-        {
-            get { return _isBusy; }
-            private set { this.RaiseAndSetIfChanged(ref _isBusy, value); }
-        }
+        [Reactive]
+        public bool IsBusy { get; set; }
 
         #endregion
 
         #region SourceFilePath
 
-        private string _sourceFilePath;
-
-        public string SourceFilePath
-        {
-            get { return _sourceFilePath; }
-            private set { this.RaiseAndSetIfChanged(ref _sourceFilePath, value); }
-        }
+        [Reactive]
+        public string SourceFilePath { get; set; }
 
         #endregion
 
         #region SourceItemLength
 
-        private int _sourceItemLength = 6000;
-
-        public int SourceItemLength
-        {
-            get { return _sourceItemLength; }
-            set { this.RaiseAndSetIfChanged(ref _sourceItemLength, value); }
-        }
+        [Reactive]
+        public int SourceItemLength { get; set; } = 6000;
 
         #endregion
 
         #region ResultsString
 
-        private string _resultsString;
-
-        public string ResultsString
-        {
-            get { return _resultsString; }
-            set { this.RaiseAndSetIfChanged(ref _resultsString, value); }
-        }
+        [Reactive]
+        public string ResultsString { get; set; }
 
         #endregion
 
@@ -142,7 +122,7 @@ namespace SurplusCalculator.ViewModels
         {
             IsBusy = true;
 
-            Dictionary<int, int> targetItemCountsByLengths = null;
+            Dictionary<int, int> targetItemCountsByLengths;
             try
             {
                 targetItemCountsByLengths = GetTargetItemCountsByLengths();
@@ -156,7 +136,7 @@ namespace SurplusCalculator.ViewModels
 
             Task.Run(() =>
             {
-                IList<ItemInfo> itemInfos = new List<ItemInfo>();
+                IList<ItemInfo> itemInfos;
                 try
                 {
                     itemInfos = _calculator.Calculate(SourceItemLength, targetItemCountsByLengths);
@@ -169,14 +149,14 @@ namespace SurplusCalculator.ViewModels
                 }
 
                 int count = itemInfos.Count;
-                var resultAsString = itemInfos.Select((x, i) => $"{ItemInfoHelper.GetFreeLength(x)}. Излишек: {ItemInfoHelper.GetHash(x)}")
-                                              .Aggregate(string.Empty, (x1, x2) => $"{x2}{Environment.NewLine}{x1}");
+                var resultAsString = itemInfos.Select((x, i) => $"{ItemInfoHelper.GetHash(x)}. Излишек: {ItemInfoHelper.GetFreeLength(x)}")
+                                              .Aggregate(string.Empty, (x1, x2) => $"{x1}{Environment.NewLine}{x2}");
                 var directoryName = Path.GetDirectoryName(SourceFilePath);
                 var fileName = Path.GetFileNameWithoutExtension(SourceFilePath);
                 var targetFilePath = Path.Combine(directoryName, $"{fileName}. result {DateTime.Now.ToString(TimeFormat)}.txt");
                 File.WriteAllText(targetFilePath, resultAsString);
 
-                ResultsString = $"Вычисления произведены успешно.\r\n\r\nТребуется {count} заготовок.\r\n\r\n{resultAsString}";
+                ResultsString = $"Вычисления произведены успешно.\r\n\r\nТребуется {count} заготовок.{resultAsString}";
 
                 IsBusy = false;
             });
