@@ -1,6 +1,6 @@
 version: 1.0.0.{build}
 
-configuration: Release(Setup)
+configuration: Release
 
 before_build:
   - nuget restore "./src/SurplusCalculator.sln"
