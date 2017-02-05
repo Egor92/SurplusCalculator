@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Media.Imaging;
 using SurplusCalculator.Infrastructure;
 using SurplusCalculator.ViewModels;
 using SurplusCalculator.Views;
@@ -16,9 +18,10 @@ namespace SurplusCalculator
                     DataContext = new MainViewModel(new FileSelector()),
                 },
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                Width = 600,
-                Height = 500,
-                Title = "Surplus calculator"
+                Width = 300,
+                Height = 300,
+                Title = "Surplus calculator",
+                Icon = new BitmapImage(new Uri("icon.ico", UriKind.Relative)),
             };
             window.Show();
         }

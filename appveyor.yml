@@ -10,5 +10,4 @@ test:
     - '**\*.Tests.dll'
     
 artifacts:  
-- path: '**\*.nupkg'
-  name: NuGet
+  - path: '**\SurplusCalculatorSetup.msi'

@@ -63,11 +63,13 @@
                     Content="Рассчитать" />
 
             <ScrollViewer Grid.Row="3"
-                          Grid.ColumnSpan="2">
-                <TextBlock FontWeight="Bold"
-                           Foreground="Blue"
-                           Text="{Binding ResultsString}"
-                           TextWrapping="Wrap" />
+                          Grid.ColumnSpan="2"
+                          VerticalScrollBarVisibility="Auto">
+                <TextBox FontWeight="Bold"
+                         Foreground="Blue"
+                         IsReadOnly="True"
+                         Text="{Binding ResultsString}"
+                         TextWrapping="Wrap" />
             </ScrollViewer>
 
         </Grid>
