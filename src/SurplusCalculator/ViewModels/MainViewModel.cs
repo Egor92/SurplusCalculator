@@ -21,16 +21,17 @@ namespace SurplusCalculator.ViewModels
 
         private const string TimeFormat = @"yyyy-MM-dd hh-mm-ss";
         private readonly IFileSelector _fileSelector;
+        private readonly ISurplusCalculator _surplusCalculator;
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private readonly Models.SurplusCalculator _calculator = new Models.SurplusCalculator();
 
         #endregion
 
         #region Ctor
 
-        public MainViewModel(IFileSelector fileSelector)
+        public MainViewModel(IFileSelector fileSelector, ISurplusCalculator surplusCalculator)
         {
             _fileSelector = fileSelector;
+            _surplusCalculator = surplusCalculator;
         }
 
         #endregion
@@ -139,7 +140,7 @@ namespace SurplusCalculator.ViewModels
                 IList<ItemInfo> itemInfos;
                 try
                 {
-                    itemInfos = _calculator.Calculate(SourceItemLength, targetItemCountsByLengths);
+                    itemInfos = _surplusCalculator.Calculate(SourceItemLength, targetItemCountsByLengths);
                 }
                 catch (Exception e)
                 {

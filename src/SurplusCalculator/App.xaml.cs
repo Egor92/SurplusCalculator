@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SurplusCalculator.Infrastructure;
+using SurplusCalculator.Models;
 using SurplusCalculator.ViewModels;
 using SurplusCalculator.Views;
 
@@ -11,11 +12,13 @@ namespace SurplusCalculator
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            var fileSelector = new FileSelector();
+            var surplusCalculator = new ApproximateSurplusCalculator();
             var window = new Window
             {
                 Content = new MainView
                 {
-                    DataContext = new MainViewModel(new FileSelector()),
+                    DataContext = new MainViewModel(fileSelector, surplusCalculator),
                 },
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 Width = 300,
