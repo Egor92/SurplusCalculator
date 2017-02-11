@@ -131,9 +131,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Infrastructure\FileSelector.cs" />
+    <Compile Include="Models\ApproximateSurplusCalculator.cs" />
     <Compile Include="Models\CalculationState.cs" />
+    <Compile Include="Models\ISurplusCalculator.cs" />
     <Compile Include="Models\ItemInfo.cs" />
     <Compile Include="Models\SurplusCalculator.cs" />
+    <Compile Include="MoreLinq\MoreEnumerable.MaxBy.cs" />
+    <Compile Include="MoreLinq\MoreEnumerable.MinBy.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

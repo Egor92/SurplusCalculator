@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SurplusCalculator.Models
 {
-    public class SurplusCalculator
+    public class SurplusCalculator : ISurplusCalculator
     {
         public IList<ItemInfo> Calculate(int sourceItemLength, IDictionary<int, int> targetItemCountsByLengths)
         {
