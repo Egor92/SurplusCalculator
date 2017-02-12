@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define SurplusCalculator_TargetDir=$(var.SurplusCalculator.TargetDir)?>
+  <?define ProductName="Surplus calculator" ?>
+  <?define ProductVersion="1.0.0.0" ?>
+  <?define ProductCode="2db81e58-2c65-4c4d-82a8-bd8c26e61eaa"?>
+  <?define UpgradeCode="4502329c-e0bb-4716-bc3a-808906e2f6d9"?>
+  <?define Manufacturer="Egor92 Software"?>
+  <Product Id="$(var.ProductCode)" Name="$(var.ProductName)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="ProgramFilesFolder_files" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <!-- <Component Id="ProductComponent"> -->
+        <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <!-- </Component> -->
+    </ComponentGroup>
+  </Fragment>
+  <Fragment>
+    <ComponentGroup Id="ProgramFilesFolder_files" Directory="ProgramFilesFolder">
+      <Component Id="SurplusCalculator.exe" Guid="a94d11d6-038a-4b5c-98d3-e0c2c997e1b1">
+        <File Id="SurplusCalculator.exe" Name="SurplusCalculator.exe" Source="$(var.SurplusCalculator_TargetDir)SurplusCalculator.exe" />
+      </Component>
+      <Component Id="SurplusCalculator.exe.config" Guid="1a06f3bc-b448-46b9-a6bc-5282e5021162">
+        <File Id="SurplusCalculator.exe.config" Name="SurplusCalculator.exe.config" Source="$(var.SurplusCalculator_TargetDir)SurplusCalculator.exe.config" />
+      </Component>
+      <Component Id="ReactiveUI.dll" Guid="4c785d76-e04b-483d-9d09-9c89cbd20787">
+        <File Id="ReactiveUI.dll" Name="ReactiveUI.dll" Source="$(var.SurplusCalculator_TargetDir)ReactiveUI.dll" />
+      </Component>
+      <Component Id="ReactiveUI.Fody.Helpers.dll" Guid="6e1ae5f7-30b7-4df1-8d3b-55a9492e2468">
+        <File Id="ReactiveUI.Fody.Helpers.dll" Name="ReactiveUI.Fody.Helpers.dll" Source="$(var.SurplusCalculator_TargetDir)ReactiveUI.Fody.Helpers.dll" />
+      </Component>
+      <Component Id="Splat.dll" Guid="e1dd252f-323d-4241-beb1-dc37519f3898">
+        <File Id="Splat.dll" Name="Splat.dll" Source="$(var.SurplusCalculator_TargetDir)Splat.dll" />
+      </Component>
+      <Component Id="System.Reactive.Core.dll" Guid="8484432e-eeb2-45a8-b04d-0b5e0bf5d354">
+        <File Id="System.Reactive.Core.dll" Name="System.Reactive.Core.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.Core.dll" />
+      </Component>
+      <Component Id="System.Reactive.Interfaces.dll" Guid="7777b656-7eaa-424b-a60b-ad47325e46cc">
+        <File Id="System.Reactive.Interfaces.dll" Name="System.Reactive.Interfaces.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.Interfaces.dll" />
+      </Component>
+      <Component Id="System.Reactive.Linq.dll" Guid="f34b0b5e-51b6-453d-b64b-6de1c1427b8a">
+        <File Id="System.Reactive.Linq.dll" Name="System.Reactive.Linq.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.Linq.dll" />
+      </Component>
+      <Component Id="System.Reactive.PlatformServices.dll" Guid="003ea541-2547-402e-b040-68ca0744eed4">
+        <File Id="System.Reactive.PlatformServices.dll" Name="System.Reactive.PlatformServices.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.PlatformServices.dll" />
+      </Component>
+      <Component Id="System.Reactive.Windows.Threading.dll" Guid="ea5b585f-981b-448a-88f1-337e8ffd3ca3">
+        <File Id="System.Reactive.Windows.Threading.dll" Name="System.Reactive.Windows.Threading.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.Windows.Threading.dll" />
+      </Component>
+      <Component Id="Xceed.Wpf.AvalonDock.dll" Guid="bd2122e1-b7ca-4dc0-83c4-15f0cb42aafb">
+        <File Id="Xceed.Wpf.AvalonDock.dll" Name="Xceed.Wpf.AvalonDock.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.AvalonDock.dll" />
+      </Component>
+      <Component Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Guid="61ee4705-80be-45c5-8dcd-b47c903adda7">
+        <File Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Name="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.AvalonDock.Themes.Metro.dll" />
+      </Component>
+      <Component Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Guid="40b28225-3957-425e-a0fa-b900a6052f94">
+        <File Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Name="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.AvalonDock.Themes.Aero.dll" />
+      </Component>
+      <Component Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Guid="c681dbf2-0265-4c99-b5fb-e4931983fd46">
+        <File Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Name="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.AvalonDock.Themes.VS2010.dll" />
+      </Component>
+      <Component Id="Xceed.Wpf.DataGrid.dll" Guid="64f66ddb-156c-4e12-a476-68324cb7d5a7">
+        <File Id="Xceed.Wpf.DataGrid.dll" Name="Xceed.Wpf.DataGrid.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.DataGrid.dll" />
+      </Component>
+      <Component Id="Xceed.Wpf.Toolkit.dll" Guid="f2caca64-b226-4554-b798-ef6f5cd25102">
+        <File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.Toolkit.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
