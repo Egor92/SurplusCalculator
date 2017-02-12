@@ -10,4 +10,4 @@ test:
     - '**\*.Tests.dll'
     
 artifacts:  
-  - path: '**\SurplusCalculatorSetup.msi'
+  - path: '**\*.msi'
