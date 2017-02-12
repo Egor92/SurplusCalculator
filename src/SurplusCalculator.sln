@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurplusCalculator", "Surplu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurplusCalculator.Tests", "SurplusCalculator.Tests\SurplusCalculator.Tests.csproj", "{7696AAC9-376B-41DB-9983-78E63C00C652}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SurplusCalculator.Setup", "SurplusCalculator.Setup\SurplusCalculator.Setup.vdproj", "{0951F491-F08F-474E-A321-DA74DA581AE4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,10 +26,6 @@ Global
 		{7696AAC9-376B-41DB-9983-78E63C00C652}.Release(Setup)|Any CPU.Build.0 = Release(Setup)|Any CPU
 		{7696AAC9-376B-41DB-9983-78E63C00C652}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7696AAC9-376B-41DB-9983-78E63C00C652}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0951F491-F08F-474E-A321-DA74DA581AE4}.Debug|Any CPU.ActiveCfg = Debug
-		{0951F491-F08F-474E-A321-DA74DA581AE4}.Release(Setup)|Any CPU.ActiveCfg = Release(Setup)
-		{0951F491-F08F-474E-A321-DA74DA581AE4}.Release(Setup)|Any CPU.Build.0 = Release(Setup)
-		{0951F491-F08F-474E-A321-DA74DA581AE4}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
