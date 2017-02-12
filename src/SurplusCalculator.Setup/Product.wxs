@@ -2,6 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define SurplusCalculator_TargetDir=$(var.SurplusCalculator.TargetDir)?>
   <?define ProductName="Surplus calculator" ?>
+  <?define ProductDescription="Surplus calculator" ?>
   <?define ProductVersion="1.0.0.0" ?>
   <?define ProductCode="2db81e58-2c65-4c4d-82a8-bd8c26e61eaa"?>
   <?define UpgradeCode="4502329c-e0bb-4716-bc3a-808906e2f6d9"?>
@@ -14,7 +15,7 @@
 
     <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
-      <ComponentGroupRef Id="ProgramFilesFolder_files" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
     </Feature>
   </Product>
 
@@ -23,19 +24,22 @@
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
       </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop"/>
     </Directory>
   </Fragment>
 
   <Fragment>
-    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-      <!-- <Component Id="ProductComponent"> -->
-        <!-- TODO: Insert files, registry keys, and other resources here. -->
-      <!-- </Component> -->
-    </ComponentGroup>
+    <DirectoryRef Id="DesktopFolder">
+     <Component Id="ApplicationShortcutDesktop" Guid="37b630a3-5abe-4ec6-8903-eb73dfbc60e7">
+       <Shortcut Id="ApplicationDesktopShortcut" Name="$(var.ProductName)" Description="$(var.ProductDescription)" Target="[INSTALLFOLDER]SurplusCalculator.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
   </Fragment>
+  
   <Fragment>
-    <ComponentGroup Id="ProgramFilesFolder_files" Directory="ProgramFilesFolder">
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="SurplusCalculator.exe" Guid="a94d11d6-038a-4b5c-98d3-e0c2c997e1b1">
         <File Id="SurplusCalculator.exe" Name="SurplusCalculator.exe" Source="$(var.SurplusCalculator_TargetDir)SurplusCalculator.exe" />
       </Component>
