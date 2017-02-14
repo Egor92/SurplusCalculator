@@ -62,6 +62,7 @@
     <Compile Include="Models\ItemInfoHelperTest.cs" />
     <Compile Include="Models\ApproximateSurplusCalculatorTest.cs" />
     <Compile Include="Models\SurplusCalculatorTest.cs" />
+    <Compile Include="Models\SurplusCalculatorTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
