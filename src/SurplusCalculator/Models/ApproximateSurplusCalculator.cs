@@ -18,7 +18,8 @@ namespace SurplusCalculator.Models
                     throw new ArgumentException();
             }
 
-            targetItemCountsByLengths = new Dictionary<int, int>(targetItemCountsByLengths);
+            targetItemCountsByLengths = targetItemCountsByLengths.OrderByDescending(x => x.Key)
+                                                                 .ToDictionary(x => x.Key, x => x.Value);
             List<ItemInfo> itemInfos = new List<ItemInfo>();
             while (!IsEmpty(targetItemCountsByLengths))
             {
@@ -50,39 +51,12 @@ namespace SurplusCalculator.Models
 
         private IList<int> GetMinimumItemInfo(int sourceItemLength, IDictionary<int, int> targetItemCountsByLengths)
         {
-            var maxItemLength = targetItemCountsByLengths.Where(x => x.Value > 0)
-                                                         .Max(x => x.Key);
-            targetItemCountsByLengths = new Dictionary<int, int>(targetItemCountsByLengths);
-            foreach (var pair in targetItemCountsByLengths)
-            {
-                var itemLength = pair.Key;
-                var itemCount = pair.Value;
-
-                if (itemLength <= maxItemLength/2)
-                    continue;
-
-                if (itemCount <= 0)
-                    continue;
-
-                if (sourceItemLength%itemLength != 0)
-                    continue;
-
-                var desiredCount = sourceItemLength/itemLength;
-                if (desiredCount > itemCount)
-                    continue;
-
-                targetItemCountsByLengths[itemLength] -= desiredCount;
-                var targetItemLengths = Enumerable.Repeat(itemLength, desiredCount)
-                                                  .ToArray();
-                return targetItemLengths;
-            }
-
             return GetMinimumItemInfo(sourceItemLength, targetItemCountsByLengths, new List<int>(), new HashSet<string>());
         }
 
-        private IList<int> GetMinimumItemInfo(int sourceItemLength, 
-                                              IDictionary<int, int> targetItemCountsByLengths, 
-                                              IList<int> actualItemLengths, 
+        private IList<int> GetMinimumItemInfo(int sourceItemLength,
+                                              IDictionary<int, int> targetItemCountsByLengths,
+                                              IList<int> actualItemLengths,
                                               ICollection<string> visitedStateHashes)
         {
             if (IsEmpty(targetItemCountsByLengths))
@@ -97,6 +71,7 @@ namespace SurplusCalculator.Models
             visitedStateHashes.Add(stateHash);
 
             List<IList<int>> minimumItemInfos = new List<IList<int>>();
+            bool isMaxLengthFounded = false;
             foreach (var pair in targetItemCountsByLengths)
             {
                 var itemLength = pair.Key;
@@ -105,19 +80,23 @@ namespace SurplusCalculator.Models
                 if (itemCount <= 0)
                     continue;
 
+                if (isMaxLengthFounded && actualItemLengths.Count == 0)
+                    break;
+                isMaxLengthFounded = true;
+
                 var copiedItemCountsByLengths = new Dictionary<int, int>(targetItemCountsByLengths);
                 copiedItemCountsByLengths[itemLength]--;
 
                 var copiedItemLengths = new List<int>(actualItemLengths)
                 {
-                    itemLength, 
+                    itemLength,
                 };
 
                 var totalLength = GetTotalLength(copiedItemLengths);
                 if (totalLength + AllowableError > sourceItemLength)
                     continue;
 
-                var minimumItemInfo = GetMinimumItemInfo(sourceItemLength, copiedItemCountsByLengths, copiedItemLengths, 
+                var minimumItemInfo = GetMinimumItemInfo(sourceItemLength, copiedItemCountsByLengths, copiedItemLengths,
                                                          visitedStateHashes);
                 if (minimumItemInfo != null)
                 {
