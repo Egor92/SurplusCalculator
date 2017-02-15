@@ -21,4 +21,4 @@ test:
     
 artifacts:
   - path: '**\*.msi'
-    name: "InstallSurplusCalculator.{version}"
+    name: "InstallSurplusCalculator.$(version)"
