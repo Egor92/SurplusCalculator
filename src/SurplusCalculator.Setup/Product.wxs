@@ -21,8 +21,8 @@
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Start $(var.ProductName) now!" />
       
     <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
-      <ComponentGroupRef Id="ProductComponents" />
       <ComponentRef Id="ApplicationShortcutDesktop" />
+      <ComponentGroupRef Id="INSTALLFOLDER_files" />
     </Feature>
   </Product>
 
@@ -31,7 +31,7 @@
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
       </Directory>
-      <Directory Id="DesktopFolder" Name="Desktop"/>
+      <Directory Id="DesktopFolder" Name="Desktop" />
     </Directory>
   </Fragment>
 
@@ -44,57 +44,60 @@
       </Component>
     </DirectoryRef>
   </Fragment>
-  
   <Fragment>
-    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="SurplusCalculator.exe" Guid="a94d11d6-038a-4b5c-98d3-e0c2c997e1b1">
+    <ComponentGroup Id="INSTALLFOLDER_files" Directory="INSTALLFOLDER">
+      <Component Id="icon.ico" Guid="add380c1-32b7-4479-8686-fbcceaa2ef05">
+        <File Id="icon.ico" Name="icon.ico" Source="$(var.SurplusCalculator_TargetDir)icon.ico" />
+      </Component>
+      <Component Id="SurplusCalculator.exe" Guid="ddda8454-4dd8-4f4a-9c0e-f22d7a04ab8e">
         <File Id="SurplusCalculator.exe" Name="SurplusCalculator.exe" Source="$(var.SurplusCalculator_TargetDir)SurplusCalculator.exe" />
       </Component>
-      <Component Id="SurplusCalculator.exe.config" Guid="1a06f3bc-b448-46b9-a6bc-5282e5021162">
+      <Component Id="SurplusCalculator.exe.config" Guid="89152967-dcbd-4a2f-8b33-c63984a7fec4">
         <File Id="SurplusCalculator.exe.config" Name="SurplusCalculator.exe.config" Source="$(var.SurplusCalculator_TargetDir)SurplusCalculator.exe.config" />
       </Component>
-      <Component Id="ReactiveUI.dll" Guid="4c785d76-e04b-483d-9d09-9c89cbd20787">
+      <Component Id="ReactiveUI.dll" Guid="86f01dbf-d2c3-425d-91ef-d7922b8ccda1">
         <File Id="ReactiveUI.dll" Name="ReactiveUI.dll" Source="$(var.SurplusCalculator_TargetDir)ReactiveUI.dll" />
       </Component>
-      <Component Id="ReactiveUI.Fody.Helpers.dll" Guid="6e1ae5f7-30b7-4df1-8d3b-55a9492e2468">
+      <Component Id="ReactiveUI.Fody.Helpers.dll" Guid="f8df8efa-bcff-4342-b64e-7fe30b305813">
         <File Id="ReactiveUI.Fody.Helpers.dll" Name="ReactiveUI.Fody.Helpers.dll" Source="$(var.SurplusCalculator_TargetDir)ReactiveUI.Fody.Helpers.dll" />
       </Component>
-      <Component Id="Splat.dll" Guid="e1dd252f-323d-4241-beb1-dc37519f3898">
+      <Component Id="Splat.dll" Guid="2111fad2-5ba9-4738-a07f-b8cd58d2ebda">
         <File Id="Splat.dll" Name="Splat.dll" Source="$(var.SurplusCalculator_TargetDir)Splat.dll" />
       </Component>
-      <Component Id="System.Reactive.Core.dll" Guid="8484432e-eeb2-45a8-b04d-0b5e0bf5d354">
+      <Component Id="System.Reactive.Core.dll" Guid="6a08cb4c-0d4b-482a-b7f3-65aff5301334">
         <File Id="System.Reactive.Core.dll" Name="System.Reactive.Core.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.Core.dll" />
       </Component>
-      <Component Id="System.Reactive.Interfaces.dll" Guid="7777b656-7eaa-424b-a60b-ad47325e46cc">
+      <Component Id="System.Reactive.Interfaces.dll" Guid="a4ec1f91-45b7-4d96-9fa5-6f582fea4692">
         <File Id="System.Reactive.Interfaces.dll" Name="System.Reactive.Interfaces.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.Interfaces.dll" />
       </Component>
-      <Component Id="System.Reactive.Linq.dll" Guid="f34b0b5e-51b6-453d-b64b-6de1c1427b8a">
+      <Component Id="System.Reactive.Linq.dll" Guid="32faa2ba-7df6-4d10-a33a-e57cf014e309">
         <File Id="System.Reactive.Linq.dll" Name="System.Reactive.Linq.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.Linq.dll" />
       </Component>
-      <Component Id="System.Reactive.PlatformServices.dll" Guid="003ea541-2547-402e-b040-68ca0744eed4">
+      <Component Id="System.Reactive.PlatformServices.dll" Guid="64e456a2-3530-41cb-842a-962d6dea6798">
         <File Id="System.Reactive.PlatformServices.dll" Name="System.Reactive.PlatformServices.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.PlatformServices.dll" />
       </Component>
-      <Component Id="System.Reactive.Windows.Threading.dll" Guid="ea5b585f-981b-448a-88f1-337e8ffd3ca3">
+      <Component Id="System.Reactive.Windows.Threading.dll" Guid="79ee05e6-cc35-4926-bdc4-992f9b0cb3ce">
         <File Id="System.Reactive.Windows.Threading.dll" Name="System.Reactive.Windows.Threading.dll" Source="$(var.SurplusCalculator_TargetDir)System.Reactive.Windows.Threading.dll" />
       </Component>
-      <Component Id="Xceed.Wpf.AvalonDock.dll" Guid="bd2122e1-b7ca-4dc0-83c4-15f0cb42aafb">
+      <Component Id="Xceed.Wpf.AvalonDock.dll" Guid="9c5fa12f-3b30-485e-a998-c264ff115917">
         <File Id="Xceed.Wpf.AvalonDock.dll" Name="Xceed.Wpf.AvalonDock.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.AvalonDock.dll" />
       </Component>
-      <Component Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Guid="61ee4705-80be-45c5-8dcd-b47c903adda7">
-        <File Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Name="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.AvalonDock.Themes.Metro.dll" />
-      </Component>
-      <Component Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Guid="40b28225-3957-425e-a0fa-b900a6052f94">
+      <Component Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Guid="b8b137ee-ab60-4399-8d08-6fd1dcae8fe7">
         <File Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Name="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.AvalonDock.Themes.Aero.dll" />
       </Component>
-      <Component Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Guid="c681dbf2-0265-4c99-b5fb-e4931983fd46">
+      <Component Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Guid="19c19a32-076d-4939-8169-cabf9461c0d6">
+        <File Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Name="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.AvalonDock.Themes.Metro.dll" />
+      </Component>
+      <Component Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Guid="fc2c3066-8e7d-42de-9123-0520c0f6bfab">
         <File Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Name="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.AvalonDock.Themes.VS2010.dll" />
       </Component>
-      <Component Id="Xceed.Wpf.DataGrid.dll" Guid="64f66ddb-156c-4e12-a476-68324cb7d5a7">
+      <Component Id="Xceed.Wpf.DataGrid.dll" Guid="d692ca84-77a8-4cc1-a1b7-c6f8de32da12">
         <File Id="Xceed.Wpf.DataGrid.dll" Name="Xceed.Wpf.DataGrid.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.DataGrid.dll" />
       </Component>
-      <Component Id="Xceed.Wpf.Toolkit.dll" Guid="f2caca64-b226-4554-b798-ef6f5cd25102">
+      <Component Id="Xceed.Wpf.Toolkit.dll" Guid="f798c947-65b5-497a-a129-05681efbde24">
         <File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" Source="$(var.SurplusCalculator_TargetDir)Xceed.Wpf.Toolkit.dll" />
       </Component>
     </ComponentGroup>
   </Fragment>
+  
 </Wix>
