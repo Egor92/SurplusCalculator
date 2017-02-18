@@ -61,7 +61,7 @@ namespace SurplusCalculator.Models
 
                     var dictionary = actualItemInfos.ToDictionary(x => x, x => new ItemInfo(x));
                     var copiedItemInfos = new List<ItemInfo>(dictionary.Values);
-                    dictionary[currentItemInfo].TargetItemLenghts.Add(currentItemLength);
+                    dictionary[currentItemInfo].TargetItemLengths.Add(currentItemLength);
 
                     FindMinimum(sourceItemLength, copiedItemCountsByLengths, copiedItemInfos, calculationState);
                 }

@@ -11,7 +11,7 @@ namespace SurplusCalculator.Models
         public ItemInfo(int sourceItemLenght, int targetItemLenghts)
         {
             SourceItemLenght = sourceItemLenght;
-            TargetItemLenghts = new List<int>
+            TargetItemLengths = new List<int>
             {
                 targetItemLenghts
             };
@@ -20,26 +20,26 @@ namespace SurplusCalculator.Models
         public ItemInfo(ItemInfo other)
         {
             SourceItemLenght = other.SourceItemLenght;
-            TargetItemLenghts = new List<int>(other.TargetItemLenghts);
+            TargetItemLengths = new List<int>(other.TargetItemLengths);
         }
 
         public ItemInfo(int sourceItemLenght, IEnumerable<int> targetItemLenghts)
         {
             SourceItemLenght = sourceItemLenght;
-            TargetItemLenghts = new List<int>(targetItemLenghts);
+            TargetItemLengths = new List<int>(targetItemLenghts);
         }
 
         #endregion
 
         public int SourceItemLenght { get; }
 
-        public List<int> TargetItemLenghts { get; }
+        public List<int> TargetItemLengths { get; }
 
         #region Overrides of Object
 
         public override string ToString()
         {
-            return $"{{{string.Join(", ", TargetItemLenghts)}}}";
+            return $"{{{string.Join(", ", TargetItemLengths)}}}";
         }
 
         #endregion
@@ -52,7 +52,7 @@ namespace SurplusCalculator.Models
                 return false;
             if (SourceItemLenght != other.SourceItemLenght)
                 return false;
-            if (!TargetItemLenghts.SequenceEqual(other.TargetItemLenghts))
+            if (!TargetItemLengths.SequenceEqual(other.TargetItemLengths))
                 return false;
             return true;
         }
@@ -64,7 +64,7 @@ namespace SurplusCalculator.Models
     {
         public static double GetFreeLength(ItemInfo itemInfos)
         {
-            return itemInfos.SourceItemLenght - itemInfos.TargetItemLenghts.Sum();
+            return itemInfos.SourceItemLenght - itemInfos.TargetItemLengths.Sum();
         }
 
         public static string GetHash(IList<ItemInfo> itemInfos)
@@ -76,7 +76,7 @@ namespace SurplusCalculator.Models
 
         public static string GetHash(ItemInfo itemInfos)
         {
-            var orderedLengths = itemInfos.TargetItemLenghts.OrderByDescending(x => x);
+            var orderedLengths = itemInfos.TargetItemLengths.OrderByDescending(x => x);
             return $"{{{string.Join(";", orderedLengths)}}}";
         }
     }

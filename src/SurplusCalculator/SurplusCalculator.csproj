@@ -133,6 +133,7 @@
     <Compile Include="Infrastructure\FileSelector.cs" />
     <Compile Include="Models\ApproximateSurplusCalculator.cs" />
     <Compile Include="Models\CalculationState.cs" />
+    <Compile Include="Models\CsvWriter.cs" />
     <Compile Include="Models\ISurplusCalculator.cs" />
     <Compile Include="Models\ItemInfo.cs" />
     <Compile Include="Models\SurplusCalculator.cs" />
