@@ -150,12 +150,10 @@ namespace SurplusCalculator.ViewModels
                 }
 
                 int count = itemInfos.Count;
-                var resultAsString = itemInfos.Select((x, i) => $"{ItemInfoHelper.GetHash(x)}. Излишек: {ItemInfoHelper.GetFreeLength(x)}")
+                var resultAsString = itemInfos.Select(
+                                                  (x, i) => $"{ItemInfoHelper.GetHash(x)}. Излишек: {ItemInfoHelper.GetFreeLength(x)}")
                                               .Aggregate(string.Empty, (x1, x2) => $"{x1}{Environment.NewLine}{x2}");
-                var directoryName = Path.GetDirectoryName(SourceFilePath);
-                var fileName = Path.GetFileNameWithoutExtension(SourceFilePath);
-                var targetFilePath = Path.Combine(directoryName, $"{fileName}. result {DateTime.Now.ToString(TimeFormat)}.txt");
-                File.WriteAllText(targetFilePath, resultAsString);
+                WriteResultToFile(itemInfos);
 
                 ResultsString = $"Вычисления произведены успешно.\r\n\r\nТребуется {count} заготовок.{resultAsString}";
 
@@ -170,6 +168,43 @@ namespace SurplusCalculator.ViewModels
                        .Where(x => !string.IsNullOrWhiteSpace(x))
                        .Select(x => x.Split(';'))
                        .ToDictionary(x => Convert.ToInt32(x[0]), x => Convert.ToInt32(x[1]));
+        }
+
+        private void WriteResultToFile(IList<ItemInfo> itemInfos)
+        {
+            var directoryName = Path.GetDirectoryName(SourceFilePath);
+            if (directoryName == null)
+                return;
+            var fileName = Path.GetFileNameWithoutExtension(SourceFilePath);
+            var targetFilePath = Path.Combine(directoryName, $"{fileName}. result {DateTime.Now:yyyy-MM-dd hh-mm-ss}.csv");
+            using (var csvWriter = new CsvWriter(targetFilePath))
+            {
+                csvWriter.Write("Всего");
+                csvWriter.Write("Общие излишки");
+                csvWriter.AddNewLine();
+
+                csvWriter.Write(itemInfos.Count);
+                var totalSurplus = itemInfos.Select(ItemInfoHelper.GetFreeLength)
+                                            .Sum();
+                csvWriter.Write(totalSurplus);
+                csvWriter.AddNewLine();
+
+                csvWriter.Write("Номер");
+                csvWriter.Write("Излишки");
+                csvWriter.AddNewLine();
+
+                for (int i = 0; i < itemInfos.Count; i++)
+                {
+                    var itemInfo = itemInfos[i];
+                    csvWriter.Write(i+1);
+                    csvWriter.Write(ItemInfoHelper.GetFreeLength(itemInfo));
+                    foreach (var itemLength in itemInfo.TargetItemLengths)
+                    {
+                        csvWriter.Write(itemLength);
+                    }
+                    csvWriter.AddNewLine();
+                }
+            }
         }
 
         #endregion
